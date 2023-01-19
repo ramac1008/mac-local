@@ -5,30 +5,30 @@ provider "kubernetes" {
 }
 
 # Create an Nginx pod
-resource "kubernetes_pod" "nginx" {
+resource "kubernetes_pod" "alpine" {
   metadata {
-    name = "terraform-example"
+    name = "terraform-example-alpine"
     labels = {
-      app = "nginx"
+      app = "alpine"
     }
   }
 
   spec {
     container {
-      image = "nginx:1.23.2"
+      image = "alpine:latest"
       name  = "example"
     }
   }
 }
 
 # Create an service
-resource "kubernetes_service" "nginx" {
+resource "kubernetes_service" "alpine" {
   metadata {
-    name = "terraform-example"
+    name = "terraform-example-alpine"
   }
   spec {
     selector = {
-      app = kubernetes_pod.nginx.metadata.0.labels.app
+      app = kubernetes_pod.alpine.metadata.0.labels.app
     }
     port {
       port        = 80
@@ -38,6 +38,6 @@ resource "kubernetes_service" "nginx" {
   }
 
   depends_on = [
-    kubernetes_pod.nginx
+    kubernetes_pod.alpine
   ]
 }
